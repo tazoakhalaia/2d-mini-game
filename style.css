@@ -1,0 +1,15 @@
+canvas {
+    border: 2px solid black;
+}
+
+.load {
+    background: url('./img/Ghost.gif');
+    min-height: 100vh;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+
+.reward {
+    background-color: pink;
+}
