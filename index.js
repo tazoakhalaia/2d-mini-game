@@ -1,6 +1,7 @@
 let canvas = document.querySelector('canvas')
 let ctx = canvas.getContext('2d')
 let load = document.querySelector('.load')
+let demonhealth = document.querySelector('.demonhealth')
 let canvasheight = canvas.height = 600
 let canvasWidth = canvas.width = 1200
 canvas.style.backgroundColor = '#1C686B'
@@ -39,17 +40,17 @@ let redmoonCureentFrameX = 0
 ////redmoon//
 
 ///enemy////
-// let enemySrcX = 32
-// let enemySrcY = 32
-// let enemywidth = 32
-// let enemyheight = 32
-// let enemyx = 100
-// let enemyY = 500
-// let enemyCurrentFrameX = 0
-// let enemyCurrentFrameY = 1
-// let enemySpeed = 10
-// let enemyImg = new Image
-// enemyImg.src = './img/enemy.png'
+let enemySrcX = 288
+let enemySrcY = 160
+let enemywidth = 288
+let enemyheight = 160
+let enemyx = 900
+let enemyY = 380
+let enemyCurrentFrameX = 0
+let enemyCurrentFrameY = 0
+let enemySpeed = 10
+let enemyImg = new Image
+enemyImg.src = './img/demon.png'
 ///end enemy///
 
 
@@ -60,10 +61,10 @@ let chestSrcX = 48
 let chestSrcY = 32
 let chestFramex = 0
 let chestFrameY = 4
-let chestX = 100
+let chestX = 600
 let chestY = 450
-let chestwidth = 48
-let chestheight = 32
+let chestwidth = 0 //48
+let chestheight = 0 //32
 ////chest///
 
 let character = new Image
@@ -78,9 +79,6 @@ walk.src = './sound/walk.mp3'
 
 function draw(){
     ctx.clearRect(0,0,canvasWidth,canvasheight)
-    ////player///
-    ctx.drawImage(character,srcX*currentFrameX,srcY*currentFrameY,width,height,x,y,width,height)
-    ////endplayer////
 
     ///redmoon///
     ctx.drawImage(redMoon,redmoonSrcX * redmoonCureentFrameX ,40,redmoonWidth,redmoonHeight,redmoonX,redmoonY,redmoonWidth,redmoonHeight)
@@ -90,14 +88,22 @@ function draw(){
     ctx.drawImage(chest,chestSrcX * chestFramex ,chestSrcY * chestFrameY,chestwidth,chestheight,chestX,chestY,chestwidth,chestheight)
     ///chest////
 
-    // ////enemy///
-    // ctx.drawImage(enemyImg,enemySrcX * enemyCurrentFrameX,enemySrcY * enemyCurrentFrameY,enemywidth,enemyheight,enemyx,enemyY,enemywidth,enemyheight)
-    // ///enemy////
+    ////enemy///
+    ctx.drawImage(enemyImg,enemySrcX * enemyCurrentFrameX,enemySrcY * enemyCurrentFrameY,enemywidth,enemyheight,enemyx,enemyY,enemywidth,enemyheight)
+    ///enemy////
 
-    ///block///
-    // ctx.fillRect(blockx,blocky,blockwidth,blockheight)
-    ////block///
+     ////player///
+     ctx.drawImage(character,srcX*currentFrameX,srcY*currentFrameY,width,height,x,y,width,height)
+     ////endplayer////
 }
+
+let demon = setInterval(() => {
+    enemyCurrentFrameX++
+    if(enemyCurrentFrameX === 6){
+        enemyCurrentFrameX = 0
+    }
+}, 100);
+
 let interval = setInterval(()=> {
     currentFrameX++
     if(currentFrameX === 8){
@@ -149,12 +155,27 @@ function updated() {
 
     let text = document.querySelector('.reward')
 
-    // if (x + width > enemyx && x < enemyx + enemywidth - 30 && y + height > enemyY + 20 && 
-    //     y < enemyY + enemyheight - 20) {
-    //     text.style.display = "flex"
-    //   }else{
-    //     text.style.display = "none"
-    //   }
+    if (x + width > enemyx + 100 && x < enemyx + enemywidth - 120 && y + height > enemyY + 80 && 
+        y < enemyY + enemyheight - 20) {
+                demonhealth.style.width =  "0"
+                demonhealth.innerHTML = "CLAIM YOUR REWARD!!!"
+                demonhealth.style.color = "white"
+            chestwidth = 48
+            chestheight = 32
+            enemywidth = 0
+            enemyheight = 0
+       enemyCurrentFrameY = 2
+       let demonhit = setInterval(() => {
+        enemyCurrentFrameX++
+        if(enemyCurrentFrameX === 15){
+            enemyCurrentFrameX = 0
+        }
+       }, 3000);
+       clearInterval(demonhit)
+      }else{
+        enemyCurrentFrameY = 0
+      }
+
       if (x + width > chestX && x < chestX + chestwidth - 35 && y + height > chestY  && 
         y < chestY + chestheight - 20) {
         text.style.display = "flex"
