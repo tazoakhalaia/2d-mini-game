@@ -8,6 +8,9 @@ let characterhealth = characterHealth.offsetWidth
 let start = document.querySelector('.startbtn')
 let myGame = document.querySelector('.myGame')
 let startdiv  = document.querySelector('.start')
+let enemy2health = document.querySelector('.enemy2health')
+let enemy2heal = enemy2health.offsetWidth
+let defeatalert = document.querySelector('.alert')
 let canvasheight = canvas.height = 600
 let canvasWidth = canvas.width = 1200
 canvas.style.backgroundColor = '#1C686B'
@@ -20,6 +23,7 @@ pausemusic.addEventListener('click', ()=>{
 playmusic.addEventListener('click', ()=> {
     menumusic.play()
 })
+
 
 ///menumusic///
 let menumusic = new Audio
@@ -102,6 +106,26 @@ let chestwidth = 48 //48
 let chestheight = 32 //32
 ////chest///
 
+///skeleton////
+let enemy2 = new Image
+enemy2.src = './img/skeleton.png'
+let enemy2SrcX = 96
+let enemy2SrcY = 96
+let enemy2width = 0
+let enemy2height = 0
+let enemy2X = 10
+let enemy2y = 450
+let enemy2FrameX = 0
+let enemy2FrameY = 0
+let enemy2interval = setInterval(() => {
+    enemy2FrameX++
+    if(enemy2FrameX === 5){
+        enemy2FrameX = 0
+    }
+}, 100);
+let enemy2hit
+///skeleton///
+
 
 function draw(){
     ctx.clearRect(0,0,canvasWidth,canvasheight)
@@ -117,6 +141,10 @@ function draw(){
     ////enemy///
     ctx.drawImage(enemyImg,enemySrcX * enemyCurrentFrameX,enemySrcY * enemyCurrentFrameY,enemywidth,enemyheight,enemyx,enemyY,enemywidth,enemyheight)
     ///enemy////
+
+    ////skeleton////
+    ctx.drawImage(enemy2, enemy2SrcX * enemy2FrameX,enemy2SrcY * enemy2FrameY,enemy2width,enemy2height,enemy2X,enemy2y,enemy2width,enemy2height)
+    ////skeleton////
 
      ////player///
      ctx.drawImage(character,srcX*currentFrameX,srcY*currentFrameY,width,height,x,y,width,height)
@@ -153,6 +181,7 @@ let redmoon = setInterval(() => {
 
 
 
+
 function updated() {
     ///player///
     draw()
@@ -181,8 +210,6 @@ function updated() {
         up = 5
     }
 
-    let text = document.querySelector('.reward')
-
     if (x + width > enemyx + 100 && x < enemyx + enemywidth - 120 && y + height > enemyY + 80 && 
         y < enemyY + enemyheight - 20) {
                 characterHealth.style.width = (characterhealth-= 0.08) + "px"
@@ -196,12 +223,28 @@ function updated() {
     clearInterval(demonhit)
       }else{
         enemyCurrentFrameY = 0
-        characterHealth.style.width = (characterhealth - 0) + "px"
       }
 
-      if (x + width > chestX && x < chestX + chestwidth - 35 && y + height > chestY  && 
+
+      ////enemy2////
+      if (x + width > enemy2X  && x < enemy2X + enemy2width - 70 && y + height > enemy2y + 30 && 
+        y < enemy2y + enemy2height - 50){
+            characterHealth.style.width = (characterhealth-= 0.2) + "px"
+            enemy2FrameY = 3
+            enemy2hit = setInterval(() => {
+                enemy2FrameX++
+                if(enemy2FrameX === 9){
+                    enemy2FrameX = 0
+                }
+            }, 100);
+            clearInterval(enemy2hit)
+        }else{
+            enemy2FrameY = 0
+        }
+        ////enemy2////
+
+        if (x + width > chestX && x < chestX + chestwidth - 35 && y + height > chestY  && 
         y < chestY + chestheight - 20) {
-        text.style.display = "flex"
         chestFrameY = 5
         let chest = setInterval(() => {
             chestFramex++
@@ -211,7 +254,6 @@ function updated() {
         }, 4000);
         clearInterval(chest)
       }else{
-        text.style.display = "none"
         clearInterval(chest)
         chestFrameY = 4
         if(chestFramex === 5){
@@ -275,11 +317,29 @@ window.addEventListener('keydown', (e)=> {
                 var target = demonhealth.offsetWidth
                 demonhealth.style.width = ( target - 2 ) + "px"
                 if(target === 0){
+                    defeatalert.style.display = "flex"
+                    setTimeout(() => {
+                    enemy2width = 113
+                    enemy2height = 96
+                    enemy2health.style.display = "flex"
+                    defeatalert.style.display = "none"
+                    }, 5000);
                     enemywidth = 0
                     enemyheight = 0
                     demonhealth.style.display = "none"
                 }
             }
+
+            if (x + width > enemy2X  && x < enemy2X + enemy2width - 70 && y + height > enemy2y + 30 && 
+                y < enemy2y + enemy2height - 50){
+                    let enemy2heal = enemy2health.offsetWidth
+                    enemy2health.style.width = (enemy2heal - 1) + 'px'
+                    if(enemy2heal === 0){
+                        enemy2width = 0
+                        enemy2height = 0
+                        enemy2health.style.display = "none"
+                    }
+                }
     }
     ////player///
 })
@@ -304,3 +364,5 @@ window.addEventListener('keyup', (e)=> {
     }
     ////player////
 })
+
+
