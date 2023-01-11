@@ -102,6 +102,7 @@ let chestwidth = 48 //48
 let chestheight = 32 //32
 ////chest///
 
+
 function draw(){
     ctx.clearRect(0,0,canvasWidth,canvasheight)
 
@@ -120,7 +121,6 @@ function draw(){
      ////player///
      ctx.drawImage(character,srcX*currentFrameX,srcY*currentFrameY,width,height,x,y,width,height)
      ////endplayer////
-
 }
 
 let demon = setInterval(() => {
@@ -150,6 +150,7 @@ let redmoon = setInterval(() => {
         redmoonCureentFrameX = 0
     }
 }, 100);
+
 
 
 function updated() {
@@ -184,7 +185,7 @@ function updated() {
 
     if (x + width > enemyx + 100 && x < enemyx + enemywidth - 120 && y + height > enemyY + 80 && 
         y < enemyY + enemyheight - 20) {
-                characterHealth.style.width = (characterhealth-= 0.04) + "px"
+                characterHealth.style.width = (characterhealth-= 0.08) + "px"
             enemyCurrentFrameY = 2
              demonhit = setInterval(() => {
            enemyCurrentFrameX++

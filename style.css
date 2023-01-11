@@ -146,3 +146,36 @@ body{
     width: 30px;
     height: 30px;
 }
+
+.hint {
+    display: flex;
+    justify-content: space-between;
+    width: 150px;
+    margin: auto;
+    margin-top: 15px;
+}
+
+
+.move img {
+    width: 30px;
+    height: 30px;
+}
+
+.space img {
+    width: 50px;
+    height: 30px;
+    margin-left: 15px;
+}
+
+.move,
+.space {
+    display: flex;
+    align-items: center;
+}
+
+.move h1,
+.space h1 {
+    font-family: gameFont;
+    font-size: 18px;
+    margin-left: 5px;
+}
