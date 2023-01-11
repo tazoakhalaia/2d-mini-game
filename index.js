@@ -2,13 +2,47 @@ let canvas = document.querySelector('canvas')
 let ctx = canvas.getContext('2d')
 let load = document.querySelector('.load')
 let demonhealth = document.querySelector('.demonhealth')
+var target = demonhealth.offsetWidth
+let characterHealth = document.querySelector('.healthwidth')
+let characterhealth = characterHealth.offsetWidth
+let start = document.querySelector('.startbtn')
+let myGame = document.querySelector('.myGame')
+let startdiv  = document.querySelector('.start')
 let canvasheight = canvas.height = 600
 let canvasWidth = canvas.width = 1200
 canvas.style.backgroundColor = '#1C686B'
+let pausemusic = document.querySelector('.pausemusic')
+let playmusic = document.querySelector('.playmusic')
+pausemusic.addEventListener('click', ()=>{
+    menumusic.pause()
+})
+
+playmusic.addEventListener('click', ()=> {
+    menumusic.play()
+})
+
+///menumusic///
+let menumusic = new Audio
+menumusic.src = './sound/menumusic.mp3'
+///menumusic///
 window.addEventListener('load', ()=> {
     load.style.display = "none"
+    menumusic.play()
+    menumusic.volume = 0.1
 })
+
+start.addEventListener('click',()=>{
+        startdiv.style.display = "none"
+        menumusic.pause()
+})
+
 ///player///
+let character = new Image
+character.src = './img/character.png'
+let srcX = 64
+let srcY = 64
+let currentFrameY = 0
+let currentFrameX = 0
 let x = 10
 let y = 10
 let speed = 5
@@ -51,6 +85,7 @@ let enemyCurrentFrameY = 0
 let enemySpeed = 10
 let enemyImg = new Image
 enemyImg.src = './img/demon.png'
+let demonhit
 ///end enemy///
 
 
@@ -63,19 +98,9 @@ let chestFramex = 0
 let chestFrameY = 4
 let chestX = 600
 let chestY = 450
-let chestwidth = 0 //48
-let chestheight = 0 //32
+let chestwidth = 48 //48
+let chestheight = 32 //32
 ////chest///
-
-let character = new Image
-character.src = './img/character.png'
-let srcX = 64
-let srcY = 64
-let currentFrameY = 0
-let currentFrameX = 0
-
-let walk = new Audio
-walk.src = './sound/walk.mp3'
 
 function draw(){
     ctx.clearRect(0,0,canvasWidth,canvasheight)
@@ -85,7 +110,7 @@ function draw(){
     ///redmoon///
 
     ////chest///
-    ctx.drawImage(chest,chestSrcX * chestFramex ,chestSrcY * chestFrameY,chestwidth,chestheight,chestX,chestY,chestwidth,chestheight)
+    // ctx.drawImage(chest,chestSrcX * chestFramex ,chestSrcY * chestFrameY,chestwidth,chestheight,chestX,chestY,chestwidth,chestheight)
     ///chest////
 
     ////enemy///
@@ -95,6 +120,7 @@ function draw(){
      ////player///
      ctx.drawImage(character,srcX*currentFrameX,srcY*currentFrameY,width,height,x,y,width,height)
      ////endplayer////
+
 }
 
 let demon = setInterval(() => {
@@ -124,6 +150,7 @@ let redmoon = setInterval(() => {
         redmoonCureentFrameX = 0
     }
 }, 100);
+
 
 function updated() {
     ///player///
@@ -157,23 +184,18 @@ function updated() {
 
     if (x + width > enemyx + 100 && x < enemyx + enemywidth - 120 && y + height > enemyY + 80 && 
         y < enemyY + enemyheight - 20) {
-                demonhealth.style.width =  "0"
-                demonhealth.innerHTML = "CLAIM YOUR REWARD!!!"
-                demonhealth.style.color = "white"
-            chestwidth = 48
-            chestheight = 32
-            enemywidth = 0
-            enemyheight = 0
-       enemyCurrentFrameY = 2
-       let demonhit = setInterval(() => {
-        enemyCurrentFrameX++
-        if(enemyCurrentFrameX === 15){
-            enemyCurrentFrameX = 0
+                characterHealth.style.width = (characterhealth-= 0.04) + "px"
+            enemyCurrentFrameY = 2
+             demonhit = setInterval(() => {
+           enemyCurrentFrameX++
+           if(enemyCurrentFrameX === 14){
+               enemyCurrentFrameX = 0
         }
-       }, 3000);
-       clearInterval(demonhit)
+    }, 1000);
+    clearInterval(demonhit)
       }else{
         enemyCurrentFrameY = 0
+        characterHealth.style.width = (characterhealth - 0) + "px"
       }
 
       if (x + width > chestX && x < chestX + chestwidth - 35 && y + height > chestY  && 
@@ -211,7 +233,6 @@ window.addEventListener('keydown', (e)=> {
     let key = e.key
     if(key === "ArrowUp"){
         y -= up
-        walk.play()
         currentFrameY = 6
         clearInterval(interval)
         currentFrameX+=1
@@ -221,7 +242,6 @@ window.addEventListener('keydown', (e)=> {
     }
     if(key === "ArrowRight"){
         x += moveRight
-        walk.play()
         currentFrameY = 5
         clearInterval(interval)
         currentFrameX+=1
@@ -231,7 +251,6 @@ window.addEventListener('keydown', (e)=> {
     }
     if(key === "ArrowLeft"){
         x -= moveLeft
-        walk.play()
         currentFrameY = 7
         clearInterval(interval)
         currentFrameX+=1
@@ -241,7 +260,6 @@ window.addEventListener('keydown', (e)=> {
     }
     if(key === "ArrowDown"){
         y += down
-        walk.play()
           currentFrameY = 4
         clearInterval(interval)
         currentFrameX+=1
@@ -249,31 +267,39 @@ window.addEventListener('keydown', (e)=> {
             currentFrameX = 0
         }
     }
+
+    if(key === " "){
+        if (x + width > enemyx + 100 && x < enemyx + enemywidth - 120 && y + height > enemyY + 80 && 
+            y < enemyY + enemyheight - 20){
+                var target = demonhealth.offsetWidth
+                demonhealth.style.width = ( target - 2 ) + "px"
+                if(target === 0){
+                    enemywidth = 0
+                    enemyheight = 0
+                    demonhealth.style.display = "none"
+                }
+            }
+    }
     ////player///
 })
-
 window.addEventListener('keyup', (e)=> {
     ////player////
     let key = e.key
     if(key === "ArrowUp"){
         up += 0 
         currentFrameY = 0
-        walk.pause()
     }
     if(key === "ArrowRight"){
         moveRight += 0
         currentFrameY = 0
-        walk.pause()
     }
     if(key === "ArrowLeft"){
         moveLeft += 0
         currentFrameY = 0
-        walk.pause()
     }
     if(key === "ArrowDown"){
         down+=0
         currentFrameY = 0
-        walk.pause()
     }
     ////player////
 })

@@ -8,11 +8,20 @@ body{
     justify-content: center;
 }
 
+@font-face {
+    font-family: gameFont;
+    src: url(./font/ThaleahFat.ttf);
+}
+
 .load {
     background: url('./img/Ghost.gif');
     min-height: 100vh;
     background-repeat: no-repeat;
     background-position: center center;
+}
+
+.myGame {
+    display: flex;
 }
 
 
@@ -28,10 +37,112 @@ body{
 }
 
 .demonhealth {
-    width: 70px;
+    width: 100px;
     height: 5px;
     background-color: red;
     position: absolute;
-    left: 1009px;
+    left: 996px;
     top: 420px;
+}
+
+.characterhealth {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.healthlogo {
+    position: relative;
+    width: 30px;
+    height: 30px;
+}
+
+.healthlogo img {
+    width: 100%;
+    height: 100%;
+}
+
+.heart {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 50%;
+    height: 50%;
+}
+
+.healthwidth {
+    margin-left: 3px;
+    height: 10px;
+    background-color: red;
+    width: 150px;
+    border-radius: 3px;
+}
+
+.start {
+    background-color: #1C686B;
+    height: 600px;
+    width: 1200px;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 11;
+}
+
+
+.startmiddle {
+    width: 25%;
+    height: 50%;
+}
+
+.startbtn {
+    font-family: gameFont;
+    font-size: 30px;
+    color: whitesmoke;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.play {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
+}
+
+.play img {
+    width: 25px;
+    height: 25px;
+}
+
+.playandpause {
+    display: flex;
+    justify-content: center;
+}
+
+.playmusic img,
+.pausemusic img{
+    width: 25px;
+    height: 25px;
+    margin-top: 15px;
+    cursor: pointer;
+}
+
+.pausemusic {
+    margin-left: 10px;
+}
+
+.skull {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.skull img {
+    width: 30px;
+    height: 30px;
 }
