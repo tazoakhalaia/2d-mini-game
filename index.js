@@ -11,11 +11,15 @@ let startdiv  = document.querySelector('.start')
 let enemy2health = document.querySelector('.enemy2health')
 let enemy2heal = enemy2health.offsetWidth
 let defeatalert = document.querySelector('.alert')
+let bosshealth = document.querySelector('.bosshealth')
+let bosshealthlegnth = document.querySelector('.bosshealthlenth')
+let refillhealth = document.querySelector('.refillhealth')
 let canvasheight = canvas.height = 600
 let canvasWidth = canvas.width = 1200
 canvas.style.backgroundColor = '#1C686B'
 let pausemusic = document.querySelector('.pausemusic')
 let playmusic = document.querySelector('.playmusic')
+let count = 0
 pausemusic.addEventListener('click', ()=>{
     menumusic.pause()
 })
@@ -24,6 +28,14 @@ playmusic.addEventListener('click', ()=> {
     menumusic.play()
 })
 
+///refillhealth///
+refillhealth.addEventListener('click', ()=> {
+    characterHealth.style.width = 150 + "px"
+    characterhealth = 150
+    refillhealth.style.display = "none"
+    count++
+})
+///refillhealth///
 
 ///menumusic///
 let menumusic = new Audio
@@ -31,13 +43,18 @@ menumusic.src = './sound/menumusic.mp3'
 ///menumusic///
 window.addEventListener('load', ()=> {
     load.style.display = "none"
-    menumusic.play()
-    menumusic.volume = 0.1
 })
 
 start.addEventListener('click',()=>{
         startdiv.style.display = "none"
         menumusic.pause()
+})
+
+let restart = document.querySelector('.restart')
+let restartpage = document.querySelector('.losepage')
+restart.addEventListener('click', ()=> {
+    location.reload()
+    restartpage.style.display = "none"
 })
 
 ///player///
@@ -126,6 +143,19 @@ let enemy2interval = setInterval(() => {
 let enemy2hit
 ///skeleton///
 
+///boss///
+let boss = new Image
+boss.src = './img/boss.png'
+let bossSrcX = 64
+let bossScry = 64
+let bosswidth = 0
+let bossheight = 0
+let bossx = 450
+let bossy = 130
+let bossFrameX = 0
+let bossFrameY = 0
+////bosss///
+
 
 function draw(){
     ctx.clearRect(0,0,canvasWidth,canvasheight)
@@ -146,10 +176,19 @@ function draw(){
     ctx.drawImage(enemy2, enemy2SrcX * enemy2FrameX,enemy2SrcY * enemy2FrameY,enemy2width,enemy2height,enemy2X,enemy2y,enemy2width,enemy2height)
     ////skeleton////
 
+    ctx.drawImage(boss,bossSrcX * bossFrameX,bossScry * bossFrameY,64,64,bossx,bossy,bosswidth,bossheight)
+
      ////player///
      ctx.drawImage(character,srcX*currentFrameX,srcY*currentFrameY,width,height,x,y,width,height)
      ////endplayer////
 }
+
+let bossinterval = setInterval(()=>{
+    bossFrameX++
+    if(bossFrameX === 10){
+        bossFrameX = 0
+    }
+},100)
 
 let demon = setInterval(() => {
     enemyCurrentFrameX++
@@ -261,6 +300,31 @@ function updated() {
          }
         
       }
+
+      function characterCurrentHealth(){
+        if(characterhealth < 2 ){
+            console.log('die');
+            restartpage.style.display = "flex"
+        }
+      }
+      characterCurrentHealth()
+
+      ///bosscordinate///
+      if (x + width > bossx + 50  && x < bossx + bosswidth - 50 && y + height > bossy + 80 && 
+        y < bossy + bossheight - 20){
+            characterHealth.style.width = (characterhealth-= 0.4) + "px"
+            if(characterhealth < 50){
+                console.log('nice');
+                refillhealth.style.display = "block"
+            }
+            if(count === 7){
+                if(characterhealth < 50){
+                    refillhealth.style.display = "none"
+                }
+            }
+        }
+      ////bosscordinate///
+
     ///end player///
 }
 
@@ -312,6 +376,9 @@ window.addEventListener('keydown', (e)=> {
     }
 
     if(key === " "){
+        clearInterval(interval)
+        currentFrameY = 29
+        currentFrameX = 1
         if (x + width > enemyx + 100 && x < enemyx + enemywidth - 120 && y + height > enemyY + 80 && 
             y < enemyY + enemyheight - 20){
                 var target = demonhealth.offsetWidth
@@ -335,11 +402,41 @@ window.addEventListener('keydown', (e)=> {
                     let enemy2heal = enemy2health.offsetWidth
                     enemy2health.style.width = (enemy2heal - 1) + 'px'
                     if(enemy2heal === 0){
+                        let defeattext = document.querySelector('.alerttext')
+                        defeattext.innerHTML = "YOUT DEFEAT SECOND BOSS!"
+                        defeatalert.style.display = "flex"
+                        defeatalert.style.fontFamily = "gameFont"
+                        defeattext.style.fontSize = "18px"
+                        setTimeout(() => {
+                            defeattext.innerHTML = "BOSS FIGHT!!!"
+                        },2000)
+                        setTimeout(() => {
+                            defeatalert.style.display = "none"
+                            bosswidth = 200
+                            bossheight = 200
+                            bosshealth.style.display = "flex"
+                        }, 5000);
                         enemy2width = 0
                         enemy2height = 0
                         enemy2health.style.display = "none"
                     }
                 }
+
+                 if (x + width > bossx + 50  && x < bossx + bosswidth - 50 && y + height > bossy + 80 && 
+                        y < bossy + bossheight - 20){
+                            let bosshealthminus = bosshealthlegnth.offsetWidth
+                            bosshealthlegnth.style.width = ( bosshealthminus - 1 ) + "px"
+                            if(bosshealthminus === 0){
+                                bosshealth.style.display = "none"
+                                bosswidth = 0
+                                bossheight = 0
+                                characterHealth.style.width = 150 + "px"
+                                characterhealth = 150
+                                if(characterhealth < 50){
+                                    refillhealth.style.display = "none"
+                                }
+                            }
+                        }
     }
     ////player///
 })
@@ -360,6 +457,9 @@ window.addEventListener('keyup', (e)=> {
     }
     if(key === "ArrowDown"){
         down+=0
+        currentFrameY = 0
+    }
+    if(key === " "){
         currentFrameY = 0
     }
     ////player////

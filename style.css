@@ -220,3 +220,109 @@ body{
         width: 1200px;
     }
 }
+
+.losepage {
+    background-color: #1C686B;
+    position: absolute;
+    width: 1200px;
+    height: 600px;
+    z-index: 11;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+.losepagemiddle {
+    width: 25%;
+    height: 25%;
+}
+
+.restartpg img {
+    width: 25px;
+    height: 25px;
+}
+
+.restartpg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+}
+
+.restart {
+    font-family: gameFont;
+    font-size: 16px;
+    background: transparent;
+    cursor: pointer;
+    color: #FFFFFF;
+    border: none;
+    outline: none;
+    margin-left: 3px;
+}
+
+.dietext img {
+    width: 25px;
+    height: 25px;
+}
+
+.dietext {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dietext h1 {
+    font-size: 16px;
+    font-family: gameFont;
+    color:  #FFFFFF;
+    margin-left: 4px;
+}
+
+.bosshealth {
+    position: absolute;
+    left: 300px;
+    top: 40px;
+    display: flex;
+    align-items: center;
+    display: none;
+
+}
+
+.bosshealthicon img {
+    width: 30px;
+    height: 30px;
+}
+
+.bosshealthlenth {
+    width: 600px;
+    background-color: #2e2727;
+    height: 10px;
+    margin-left: 6px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    margin-top: -5px;
+}
+
+.refillhealth {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    left: 1000px;
+    top: 130px;
+    display: none;
+    cursor: pointer;
+
+}
+
+.refillhealth img {
+    width: 100%;
+    height: 100%;
+}
+
+.refillhealth h1 {
+    font-family: gameFont;
+    font-size: 12px;
+    color: #d7d2d2;
+    letter-spacing: 1.5px;
+}
