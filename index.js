@@ -14,12 +14,16 @@ let defeatalert = document.querySelector('.alert')
 let bosshealth = document.querySelector('.bosshealth')
 let bosshealthlegnth = document.querySelector('.bosshealthlenth')
 let refillhealth = document.querySelector('.refillhealth')
+let nextworld = document.querySelector('.nextworld')
+let finalbosshealth = document.querySelector('.finalbosshealthbar')
+let finalbosshealthline = document.querySelector('.healthline')
 let canvasheight = canvas.height = 600
 let canvasWidth = canvas.width = 1200
 canvas.style.backgroundColor = '#1C686B'
 let pausemusic = document.querySelector('.pausemusic')
 let playmusic = document.querySelector('.playmusic')
 let count = 0
+let finalbosshealthrefillcount = 0
 pausemusic.addEventListener('click', ()=>{
     menumusic.pause()
 })
@@ -49,7 +53,12 @@ start.addEventListener('click',()=>{
         startdiv.style.display = "none"
         menumusic.pause()
 })
-
+let playagain = document.querySelector('.playagain')
+let winalert = document.querySelector('.winalert')
+playagain.addEventListener('click', ()=>{
+    location.reload()
+    winalert.style.display = "none"
+})
 let restart = document.querySelector('.restart')
 let restartpage = document.querySelector('.losepage')
 restart.addEventListener('click', ()=> {
@@ -117,10 +126,10 @@ let chestSrcX = 48
 let chestSrcY = 32
 let chestFramex = 0
 let chestFrameY = 4
-let chestX = 600
-let chestY = 450
-let chestwidth = 48 //48
-let chestheight = 32 //32
+let chestX = 540
+let chestY = 280
+let chestwidth = 0 //48
+let chestheight = 0 //32
 ////chest///
 
 ///skeleton////
@@ -156,17 +165,45 @@ let bossFrameX = 0
 let bossFrameY = 0
 ////bosss///
 
+///finalboss///
+let finalboss = new Image
+finalboss.src = './img/finalboss.png'
+let finalsrcx = 585
+let finalframe = 0
+let finalsrcy = 0
+let finalbosswidth = 0
+let finalbossheight = 0
+let finalbossx = 550
+let finalbossy = 300
+///finalboss///
+
+////door///
+let demondoor = new Image
+demondoor.src = './img/door.png'
+let doorsrcx = 240
+let doorsrcy =240
+let doorframex = 0
+let doorframey = 0
+let doorwidth = 0
+let doorheight = 0
+let doorx = 370
+let doory = 20
+///door//
 
 function draw(){
     ctx.clearRect(0,0,canvasWidth,canvasheight)
+
+    ctx.drawImage(finalboss,finalsrcx*finalframe,finalsrcy,550,300,finalbossx,finalbossy,finalbosswidth,finalbossheight)
+
+    ctx.drawImage(demondoor,doorsrcx * doorframex, doorsrcy * doorframey,doorsrcx,doorsrcy,doorx,doory,doorwidth,doorheight)
 
     ///redmoon///
     ctx.drawImage(redMoon,redmoonSrcX * redmoonCureentFrameX ,40,redmoonWidth,redmoonHeight,redmoonX,redmoonY,redmoonWidth,redmoonHeight)
     ///redmoon///
 
-    ////chest///
+    // //chest///
     // ctx.drawImage(chest,chestSrcX * chestFramex ,chestSrcY * chestFrameY,chestwidth,chestheight,chestX,chestY,chestwidth,chestheight)
-    ///chest////
+    // ///chest////
 
     ////enemy///
     ctx.drawImage(enemyImg,enemySrcX * enemyCurrentFrameX,enemySrcY * enemyCurrentFrameY,enemywidth,enemyheight,enemyx,enemyY,enemywidth,enemyheight)
@@ -182,6 +219,20 @@ function draw(){
      ctx.drawImage(character,srcX*currentFrameX,srcY*currentFrameY,width,height,x,y,width,height)
      ////endplayer////
 }
+
+let doorinterval = setInterval(() => {
+    doorframex++
+    if(doorframex === 9){
+        doorframex = 0
+    }
+}, 150);
+
+let finalbossinterval = setInterval(() => {
+    finalframe++
+    if(finalframe === 3){
+        finalframe = 0
+    }
+}, 400);
 
 let bossinterval = setInterval(()=>{
     bossFrameX++
@@ -325,6 +376,61 @@ function updated() {
         }
       ////bosscordinate///
 
+      ///door cordinate///
+      if(y < doory + doorheight - 140 && x + width > doorx + 70  && x < doorx + doorwidth - 85 && y + height > doory + 80){
+        doorframey = 2
+        doorframex = 1
+        y-=1
+        currentFrameY = 6
+        currentFrameX++
+        characterHealth.style.width = 220 + "px"
+        characterhealth = 220
+        if(currentFrameX === 8){
+            currentFrameX = 0
+        }
+        if(y< doory + doorheight - 280){
+            width = 0
+            height = 0
+            refillhealth.style.display = "none"
+            setTimeout(() => {
+                doorwidth = 0
+                doorheight = 0
+                nextworld.style.display = "flex"
+            }, 3000);
+            setTimeout(() => {
+                nextworld.style.display = "none"
+                canvas.style.backgroundColor = "#1F1F1F"
+                finalbosswidth = 640
+                finalbossheight = 300
+                width = 50
+                height = 50
+                x = 10
+                y = 500
+                currentFrameY = 0
+                finalbosshealth.style.display = "flex"
+            }, 6000);
+        }
+      }
+      else{
+        doorframey = 0
+    }
+      ///door codtinate////
+
+      //finalboss cordinate///
+      if (x + width > finalbossx + 30 && x < finalbossx + finalbosswidth - 35 && y + height > finalbossy + 50  && 
+        y < finalbossy + finalbossheight - 20){
+            characterHealth.style.width = (characterhealth -= 0.2) + "px"
+            if(characterhealth < 100){
+                refillhealth.style.display = "block"
+            }
+            if(count === 11){
+                if(characterhealth < 10){
+                    refillhealth.style.display = "none"
+                }
+            }
+        }
+      //finalboss cordinate///
+
     ///end player///
 }
 
@@ -432,11 +538,34 @@ window.addEventListener('keydown', (e)=> {
                                 bossheight = 0
                                 characterHealth.style.width = 150 + "px"
                                 characterhealth = 150
+                                doorwidth = 390
+                                doorheight = 390
                                 if(characterhealth < 50){
                                     refillhealth.style.display = "none"
                                 }
                             }
                         }
+                        if (x + width > finalbossx + 30 && x < finalbossx + finalbosswidth - 35 && y + height > finalbossy + 50  && 
+                            y < finalbossy + finalbossheight - 20){
+                                let finalbosshealthlineoffset = finalbosshealthline.offsetWidth
+                                finalbosshealthline.style.width = (finalbosshealthlineoffset -= 1) + "px"
+                                if(finalbosshealthrefillcount <= 2){
+                                    if(finalbosshealthlineoffset < 100){
+                                        finalbosshealthrefillcount++
+                                        finalbosshealthlineoffset = 270
+                                        finalbosshealthline.style.width = 270 + "px"
+                                    }
+                                }
+                                if(finalbosshealthlineoffset === 0){
+                                    finalbosswidth = 0
+                                    finalbossheight = 0
+                                    finalbosshealth.style.display = "none"
+                                    refillhealth.style.display = "none"
+                                   setTimeout(() => {
+                                    winalert.style.display = "flex"
+                                   }, 1000);
+                                }
+                            }
     }
     ////player///
 })

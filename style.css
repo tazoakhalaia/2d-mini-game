@@ -326,3 +326,91 @@ body{
     color: #d7d2d2;
     letter-spacing: 1.5px;
 }
+
+.nextworld {
+    background-color: #1C686B;
+    position: absolute;
+    width: 1200px;
+    height: 600px;
+    z-index: 123;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+.nextworld h1 {
+    font-family: gameFont;
+    color: #FFFFFF;
+}
+
+
+.finalbosshealthbar {
+    position: absolute;
+    top: 30px;
+    width: 420px;
+    height: 200px;
+    display: none;
+}
+.ffbshealth img {
+    width: 420px;
+    height: 200px;
+}
+
+.pic {
+    position: absolute;
+    top: 55px;
+    left: 40px;
+}
+
+.pic img {
+    width: 90px;
+    height: 90px;
+}
+
+.healthline {
+    width: 270px;
+    height: 10px;
+    background-color: red;
+    position: absolute;
+    top: 0;
+    top: 96px;
+    left: 123px;
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+
+.winalert {
+    background-color: #1C686B;
+    width: 1200px;
+    height: 600px;
+    z-index: 444;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+.winalert h1 {
+    font-size: 22px;
+    font-family: gameFont;
+    color: #FFFFFF;
+}
+
+.winalert img {
+    width: 300px;
+    height: 300px;
+}
+
+.playagain {
+    font-family: gameFont;
+    font-size: 16px;
+    background: transparent;
+    cursor: pointer;
+    color: #FFFFFF;
+    border: none;
+    outline: none;
+    margin-left: 3px;
+}
